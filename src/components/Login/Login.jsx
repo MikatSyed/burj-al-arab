@@ -37,7 +37,8 @@ const Login = () => {
           email: email
         }
         setLoggedInUser(signInUser);
-        history.push(from)
+        authToken()
+       
 
       }).catch((error) => {
         var errorCode = error.code;
@@ -46,6 +47,18 @@ const Login = () => {
         var credential = error.credential;
 
       });
+  }
+
+  const authToken = () =>{
+    firebase.auth().currentUser.getIdToken(/* forceRefresh */ true)
+    .then(function(idToken) {
+      // Send token to your backend via HTTPS
+      sessionStorage.setItem('token',idToken)
+      history.push(from)
+    })
+    .catch(function(error) {
+      // Handle error
+    });
   }
   return (
     <div>
